@@ -1,0 +1,15 @@
+.App {
+  text-align: center;
+}
+
+#data-table {
+  border: 1px solid black;
+  border-collapse: collapse;
+  border-spacing: 0px;
+}
+#data-table tr td {
+  padding: 0;
+}
+#data-table tr td input {
+  margin: 0;
+}
