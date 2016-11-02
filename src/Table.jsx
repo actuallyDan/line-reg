@@ -17,9 +17,9 @@ export default class Table extends React.Component {
 		}
 		this.setState({rows: rowDetail});
 	}
-	addRow(event){
-		if(event.key === "Enter" || event.key === "ArrowDown"){
-            let thisRow = event.target.getAttribute("data-cell-id");
+	addRow(e){
+		if(e.key === "Enter" || e.key === "ArrowDown"){
+            let thisRow = e.target.getAttribute("data-cell-id");
             if (parseInt(thisRow.substring(1,thisRow.length), 10) === this.state.rowLength) {
             	let tempRows = this.state.rows;
             	tempRows.push({id: this.state.rowLength + 1});
@@ -27,6 +27,18 @@ export default class Table extends React.Component {
             }
             let newRow = thisRow.substring(0,1) + (parseInt(thisRow.substring(1,thisRow.length), 10) + 1);
             document.getElementById(newRow).focus();
+		}  else if(e.key === "ArrowRight"){
+			let current = e.target;
+			let next = current.parentNode;
+			next = next.nextSibling;
+			next = next.getElementsByTagName('input')[0];
+			next.focus();
+		} else if(e.key === "ArrowLeft"){
+			let current = e.target;
+			let next = current.parentNode;
+			next = next.previousSibling;
+			next = next.getElementsByTagName('input')[0];
+			next.focus();
 		}
 	}
 
@@ -44,7 +56,7 @@ export default class Table extends React.Component {
 			</tr></thead>
 			<tbody>
 			{Object.keys(this.state.rows).map((key) => {
-				return <Row key={key} row={this.state.rows[key].id} addRow={this.addRow.bind(this)}/>
+				return <Row key={key} row={this.state.rows[key].id} handleKeyPress={this.addRow.bind(this)}/>
 			})}
 			</tbody>
 			</table>
