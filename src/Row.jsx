@@ -19,7 +19,7 @@ export default class Row extends React.Component {
 		
 		return (<tr>
 			{Object.keys(this.state.columns).map((key) => {
-				return <td key={key}> <input id={this.state.columns[key].id + this.props.row} data-cell-id={this.state.columns[key].id + this.props.row} type="text"  onKeyUp={this.props.handleKeyPress}/> </td>
+				return <td key={key}> <input className="table-cell" id={this.state.columns[key].id + this.props.row} data-cell-id={this.state.columns[key].id + this.props.row} type="text"  onKeyUp={this.props.handleKeyPress}/> </td>
 			})}
 			</tr>)
 	}
