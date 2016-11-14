@@ -61,6 +61,8 @@ export default class Table extends React.Component {
 				this.setState({data: currData});
 				this.props.updateData(this.state.data);
 			}
+		} else if (e.which < 48 || e.which > 57 || e.which !== 8 || e.which !== 46){
+			e.target.substring(0, e.target.length - 2);
 		}
 	}
 	

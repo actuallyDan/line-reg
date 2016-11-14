@@ -34,8 +34,15 @@ class App extends Component {
     return (
 
       <div className="App">
-        <Table updateData={this.updateData.bind(this)}/>
-        {this.state.data.length > 1 ? <Chart chartType="ScatterChart" data={this.state.data} options={this.state.options} graph_id="ScatterChart"  width={"100%"} height={"400px"}  legend_toggle={true} /> : ""}
+             <div id="side-nav"> <Table updateData={this.updateData.bind(this)}/></div>
+             <div id="main">
+      <div id="header"> 
+      <p className="header-title">Linear Regression</p>
+      <p className="header-subtitle">Built with React and React Google Charts</p>
+      </div>
+
+       <div id="graph-wrapper"> {this.state.data.length > 1 ? <Chart chartType="ScatterChart" data={this.state.data} options={this.state.options} graph_id="ScatterChart" legend_toggle={true} /> : ""}</div>
+       </div>
       </div>
     );
   }

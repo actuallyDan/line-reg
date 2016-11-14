@@ -15,11 +15,21 @@ export default class Row extends React.Component {
 		}
 		this.setState({columns: colDetail});
 	}
+	focus(e){
+		e.target.style.boxShadow = (e.target.style.boxShadow  === "" || e.target.style.boxShadow  === "") ? "0 0 10px #0090ff" : "none";
+	}
 	render(){
 		
 		return (<tr>
 			{Object.keys(this.state.columns).map((key) => {
-				return <td key={key}> <input className="table-cell" id={this.state.columns[key].id + this.props.row} data-cell-id={this.state.columns[key].id + this.props.row} type="text"  onKeyUp={this.props.handleKeyPress}/> </td>
+				return <td key={key}> <input className="table-cell" 
+											 id={this.state.columns[key].id + this.props.row} 
+											 data-cell-id={this.state.columns[key].id + this.props.row} 
+											 type="text"
+											 onFocus={this.focus}  
+ 											 onBlur={this.focus}  
+											 onKeyUp={this.props.handleKeyPress}/> 
+						</td>
 			})}
 			</tr>)
 	}
