@@ -52,7 +52,8 @@ html, body {
 	width: 35%;
 	border-right: 1px solid #444;
 }
-#graph-wrapper{
+#graph-wrapper, #label-wrapper{
+	padding: 1em;
 }
 #main {
 	width: 65%;

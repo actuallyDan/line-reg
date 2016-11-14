@@ -33,9 +33,23 @@ class App extends Component {
         vAxis: {title: yLabel, minValue: (yMin >= 0 ? 0 : yMin), maxValue: xMax},
         legend: 'none',
         trendlines: {0: {}}
+      },
+      summaryStats:{
+        n: data.length - 1
+        max_X: xMax,
+        min_X: xMin,
+        max_Y: yMin,
+        r: this.findRValue(data)
       }
     });
 
+  }
+  findRValue(data){
+    let x_values = [], y_values = [];
+    for(var i = 1, j = data.length; i < j; i++){
+      x_values.push(data[i][0]);
+      y_values.push(data[i][1]);
+    }
   }
   componentDidMount(){
     window.addEventListener("resize", this.handleResize.bind(this));
@@ -79,13 +93,15 @@ class App extends Component {
             <p className="header-subtitle flow-text">watch the data render on the right</p>
             <p className="header-built-with">Built with React and React Google Charts</p>
           </div>
-          <label htmlFor="yLabel" > Y Axis Label</label>              <input type="text" id="yLabel" onKeyUp={this.setLabels.bind(this)} defaultValue="Y Value"/> 
-          <label htmlFor="x1Label" > X<sub>1</sub> Axis Label </label><input type="text" id="x1Label" onKeyUp={this.setLabels.bind(this)} defaultValue="X Value"/>
-          <label htmlFor="x2Label" > X<sub>2</sub> Axis Label </label><input type="text" id="x2Label"/> 
-          <label htmlFor="x3Label" > X<sub>3</sub> Axis Label </label><input type="text" id="x3Label"/>  
-          <label htmlFor="x4Label" > X<sub>4</sub> Axis Label </label><input type="text" id="x4Label"/> 
+          <div id="label-wrapper">
+            <label htmlFor="yLabel" > Y Axis Label</label>              <input type="text" id="yLabel" onKeyUp={this.setLabels.bind(this)} defaultValue="Y Value"/> 
+            <label htmlFor="x1Label" > X<sub>1</sub> Axis Label </label><input type="text" id="x1Label" onKeyUp={this.setLabels.bind(this)} defaultValue="X Value"/>
+            <label htmlFor="x2Label" > X<sub>2</sub> Axis Label </label><input type="text" id="x2Label"/> 
+            <label htmlFor="x3Label" > X<sub>3</sub> Axis Label </label><input type="text" id="x3Label"/>  
+            <label htmlFor="x4Label" > X<sub>4</sub> Axis Label </label><input type="text" id="x4Label"/> 
+          </div>
           <div id="graph-wrapper"> 
-            {this.state.data.length > 1 ? <Chart chartType="ScatterChart" data={this.state.data} options={this.state.options} width={this.state.chart.width} graph_id="ScatterChart" height={ this.state.chart.height}  /> : ""}
+            {this.state.data.length > 1 ? <Chart chartType="ScatterChart" data={this.state.data} options={this.state.options} width={this.state.chart.width} graph_id="ScatterChart" height={ this.state.chart.height}  /> : "Enter data on the left to see the graph"}
          </div> 
         </div>
       </div>
