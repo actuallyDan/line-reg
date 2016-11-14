@@ -6,7 +6,7 @@ export default class Table extends React.Component {
 		super();
 		// let rows = this.generateRows().bind(this);
 		this.state = {
-			rowLength: 5,
+			rowLength: window.innerHeight / 27,
 			rows: [],
 			data: [["X Label", "Y Label"]]
 		};

@@ -16,7 +16,7 @@ export default class Row extends React.Component {
 		this.setState({columns: colDetail});
 	}
 	focus(e){
-		e.target.style.boxShadow = (e.target.style.boxShadow  === "" || e.target.style.boxShadow  === "") ? "0 0 10px #0090ff" : "none";
+		e.target.style.boxShadow = (e.target.style.boxShadow  === "" || e.target.style.boxShadow  === "none") ? "0 0 10px #0090ff" : "none";
 	}
 	render(){
 		
