@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Table from './Table.jsx';
 import {Chart} from 'react-google-charts'
-
+import StatWrapper from './StatWrapper.jsx';
 class App extends Component {
   constructor(){
     super();
@@ -9,12 +9,12 @@ class App extends Component {
       data: [],
       chart: {
         height: window.innerHeight - 180 ,
-        width: window.innerWidth - window.innerWidth * 0.4
+        width: window.innerWidth - window.innerWidth * 0.55
       }
     };
   }
   updateData(data){
-    let max = Math.minValue, min = Math.maxValue;
+    let max = Number.MIN_VALUE, min = Number.MAX_VALUE;
     let yMin = min, xMin = min, yMax = max, xMax = max;
     let yLabel = document.getElementById("yLabel").value;
     let x1Label = document.getElementById("x1Label").value;
@@ -29,27 +29,43 @@ class App extends Component {
       data: data,
       options: {
         title: x1Label + " vs. " + yLabel,
-        hAxis: {title: x1Label, minValue: (xMin >= 0 ? 0 : xMin), maxValue: yMax},
-        vAxis: {title: yLabel, minValue: (yMin >= 0 ? 0 : yMin), maxValue: xMax},
+        hAxis: {title: x1Label, minValue: (xMin >= 0 ? 0 : xMin), maxValue: xMax},
+        vAxis: {title: yLabel, minValue: (yMin >= 0 ? 0 : yMin), maxValue: yMax},
         legend: 'none',
         trendlines: {0: {}}
       },
       summaryStats:{
-        n: data.length - 1
+        n: data.length - 1,
         max_X: xMax,
         min_X: xMin,
-        max_Y: yMin,
-        r: this.findRValue(data)
+        max_Y: yMax,
+        min_Y: yMin,
+        r: parseFloat(this.findRValue(data)).toFixed(4)
       }
     });
 
+    console.log(this.state);
   }
   findRValue(data){
-    let x_values = [], y_values = [];
+    let x_array = [], y_array = [];
     for(var i = 1, j = data.length; i < j; i++){
-      x_values.push(data[i][0]);
-      y_values.push(data[i][1]);
+      x_array.push(data[i][0]);
+      y_array.push(data[i][1]);
     }
+    let x_sum = 0, y_sum = 0, x_sum_sq = 0, y_sum_sq = 0, prod_sum = 0;
+    let n = x_array.length;
+    for(let i = 0; i < n; i++){ 
+      x_sum += x_array[i];
+      y_sum += y_array[i];
+      x_sum_sq += Math.pow(x_array[i], 2);
+      y_sum_sq += Math.pow(y_array[i], 2);
+      prod_sum += x_array[i] * y_array[i];
+    }
+
+    let numerator = prod_sum - (x_sum * y_sum / n);
+    let denominator = Math.sqrt( (x_sum_sq - Math.pow(x_sum, 2) / n) * (y_sum_sq - Math.pow(y_sum, 2) / n) );
+
+    return denominator === 0 ? 0 : numerator / denominator;
   }
   componentDidMount(){
     window.addEventListener("resize", this.handleResize.bind(this));
@@ -58,7 +74,7 @@ class App extends Component {
     this.setState({
       chart: {
         height: window.innerHeight - 150 ,
-        width: window.innerWidth - window.innerWidth * 0.35
+        width: window.innerWidth - window.innerWidth * 0.55
       }
     });
   }
@@ -73,40 +89,40 @@ class App extends Component {
         vAxis:{title: yLabel},
         trendlines: {0: {}}
       }
-      });
-    }
-  }
-  render() {
-    return (
+    });
+   }
+ }
+ 
+render() {
+  return (
 
-      <div className="App">
-        <div id="side-nav"> 
-          <div id="data-table-header">
-            <p className="header-title flow-text">Data Table</p>
-            <p className="header-subtitle flow-text">Enter results in the table below</p>
-          </div>
-          <Table updateData={this.updateData.bind(this)}/>
-        </div>
-        <div id="main">
-          <div id="header"> 
-            <p className="header-title flow-text">Linear Regression</p>
-            <p className="header-subtitle flow-text">watch the data render on the right</p>
-            <p className="header-built-with">Built with React and React Google Charts</p>
-          </div>
-          <div id="label-wrapper">
-            <label htmlFor="yLabel" > Y Axis Label</label>              <input type="text" id="yLabel" onKeyUp={this.setLabels.bind(this)} defaultValue="Y Value"/> 
-            <label htmlFor="x1Label" > X<sub>1</sub> Axis Label </label><input type="text" id="x1Label" onKeyUp={this.setLabels.bind(this)} defaultValue="X Value"/>
-            <label htmlFor="x2Label" > X<sub>2</sub> Axis Label </label><input type="text" id="x2Label"/> 
-            <label htmlFor="x3Label" > X<sub>3</sub> Axis Label </label><input type="text" id="x3Label"/>  
-            <label htmlFor="x4Label" > X<sub>4</sub> Axis Label </label><input type="text" id="x4Label"/> 
-          </div>
-          <div id="graph-wrapper"> 
-            {this.state.data.length > 1 ? <Chart chartType="ScatterChart" data={this.state.data} options={this.state.options} width={this.state.chart.width} graph_id="ScatterChart" height={ this.state.chart.height}  /> : "Enter data on the left to see the graph"}
-         </div> 
-        </div>
-      </div>
-      );
-  }
+    <div className="App">
+    <div id="side-nav"> 
+    <div id="data-table-header">
+    <p className="header-title flow-text">Data Table</p>
+    <p className="header-subtitle flow-text">Enter results in the table below</p>
+    </div>
+    <Table updateData={this.updateData.bind(this)}/>
+    </div>
+    <div id="main">
+    <div id="header"> 
+    <p className="header-title flow-text">Linear Regression</p>
+    <p className="header-subtitle flow-text">watch the data render on the right</p>
+    <p className="header-built-with">Built with React and React Google Charts</p>
+    </div>
+    <div id="label-wrapper">
+    <label htmlFor="yLabel" > Y Axis Label</label>              <input type="text" id="yLabel" onKeyUp={this.setLabels.bind(this)} defaultValue="Y Value"/> 
+    <label htmlFor="x1Label" > X<sub>1</sub> Axis Label </label><input type="text" id="x1Label" onKeyUp={this.setLabels.bind(this)} defaultValue="X Value"/>
+    
+    </div>
+    <div id="graph-wrapper"> 
+    {this.state.data.length > 1 ? <Chart chartType="ScatterChart" data={this.state.data} options={this.state.options} width={this.state.chart.width} graph_id="ScatterChart" height={ this.state.chart.height}  /> : "Enter data on the left to see the graph"}
+    </div> 
+    {this.state.data.length > 1 ? <StatWrapper stats={this.state.summaryStats} /> : ""}
+    </div>
+    </div>
+    );
+}
 }
 
 export default App;

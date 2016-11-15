@@ -2,10 +2,9 @@
 html, body {
 	padding: 0;
 	margin: 0;
-	font-family: "Titillium Web", Arial, sans-serif;
+	font-family: "Titillium Web", Arial, sans-serif !important;
 }
-.App {
-}
+
 #data-table-header{
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
@@ -52,8 +51,30 @@ html, body {
 	width: 35%;
 	border-right: 1px solid #444;
 }
-#graph-wrapper, #label-wrapper{
-	padding: 1em;
+#label-wrapper{
+	padding: 0.5em;
+}
+#graph-wrapper{ 
+	padding: 0 0.5em;
+}
+#graph-wrapper, #stat-wrapper {
+	display: flex;
+}
+#graph-wrapper{
+	float: left;
+}
+#stat-wrapper {
+	color: #444;
+	float: left;
+	padding: 0.5em;
+}
+
+#stat-wrapper table{
+	border-collapse: collapse;
+}
+#stat-wrapper table tr td {
+	border: 1px solid #a9a9a9;
+
 }
 #main {
 	width: 65%;
@@ -68,8 +89,8 @@ html, body {
 }
 #data-table tr td {
 	margin: 0;
-	border-top: 1px solid #444;
-	border-right: 1px solid #444;
+	border-top: 1px solid #a9a9a9;
+	border-right: 1px solid #a9a9a9;
 }
 #data-table tr th {
 	background-color: #fff;
