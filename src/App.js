@@ -32,7 +32,10 @@ class App extends Component {
         hAxis: {title: x1Label, minValue: (xMin >= 0 ? 0 : xMin), maxValue: xMax},
         vAxis: {title: yLabel, minValue: (yMin >= 0 ? 0 : yMin), maxValue: yMax},
         legend: 'none',
-        trendlines: {0: {}}
+        trendlines: {0: {
+          type: 'linear',
+           visibleInLegend: true
+        }}
       },
       summaryStats:{
         n: data.length - 1,
@@ -87,12 +90,24 @@ class App extends Component {
         title: x1Label + " vs. " + yLabel,
         hAxis:{title: x1Label},
         vAxis:{title: yLabel},
-        trendlines: {0: {}}
+        trendlines: {0: {type: this.state.options.trendlines[0].type,
+        visibleInLegend: true}}
       }
     });
    }
  }
- 
+ toggleTrendLine(){
+  let trend = this.state.options.trendlines[0].type === "linear" ? "exponential" : "linear";
+  this.setState({  
+      options: {
+        title: x1Label + " vs. " + yLabel,
+        hAxis:{title: x1Label},
+        vAxis:{title: yLabel},
+        trendlines: {0: {type: trend,
+        visibleInLegend: true}}
+      }
+    });
+ }
 render() {
   return (
 
@@ -113,7 +128,7 @@ render() {
     <div id="label-wrapper">
     <label htmlFor="yLabel" > Y Axis Label</label>              <input type="text" id="yLabel" onKeyUp={this.setLabels.bind(this)} defaultValue="Y Value"/> 
     <label htmlFor="x1Label" > X<sub>1</sub> Axis Label </label><input type="text" id="x1Label" onKeyUp={this.setLabels.bind(this)} defaultValue="X Value"/>
-    
+    <label htmlFor="toggleTrend"> Use Exponential? </label> <input type="checkbox" id="toggleTrend" onClick={this.toggleTrendLine.bind(this)}/>
     </div>
     <div id="graph-wrapper"> 
     {this.state.data.length > 1 ? <Chart chartType="ScatterChart" data={this.state.data} options={this.state.options} width={this.state.chart.width} graph_id="ScatterChart" height={ this.state.chart.height}  /> : "Enter data on the left to see the graph"}
