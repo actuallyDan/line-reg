@@ -1,7 +1,7 @@
 {
   "name": "lineReg",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "devDependencies": {
     "react-scripts": "0.6.1"
   },
